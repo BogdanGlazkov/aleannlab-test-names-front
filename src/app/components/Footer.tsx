@@ -1,10 +1,12 @@
-const Footer = () => {
+import { FC } from "react";
+
+const Footer: FC = () => {
   return (
     <footer className="border-t p-4 bg-teal-700 text-white">
       <section className="mx-auto flex max-w-4xl flex-col sm:flex-row sm:justify-between">
         <address>
           <a href="/">
-            <h2 className="text-xl font-medium">Name Rank App</h2>
+            <h2 className="text-xl font-medium">Names Rank</h2>
           </a>
           <br />
           Created by Bogdan Glazkov
