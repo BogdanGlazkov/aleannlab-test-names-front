@@ -9,12 +9,12 @@ import { NameDataDto, NameDto } from "../api/dto/names.dto";
 
 const NamesList = () => {
   const [names, setNames] = useState<NameDataDto | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const allNames = await getNames();
-      if (allNames) setNames(allNames);
+      if (allNames)
+        setNames(allNames.sort((a: NameDto, b: NameDto) => a.rank - b.rank));
     };
     fetchData();
   }, []);
