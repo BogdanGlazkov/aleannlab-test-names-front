@@ -1,27 +1,43 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { getAllNames } from "../../services/namesService";
+import { getNames } from "../api/names.api";
 import NamesItem from "./NamesItem";
 import CreateForm from "./CreateForm";
+import Loader from "./Loader";
+import { NameDataDto, NameDto } from "../api/dto/names.dto";
 
-const NamesList: FC = () => {
-  const [names, setNames] = useState([]);
+const NamesList = () => {
+  const [names, setNames] = useState<NameDataDto | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
-    async () => {
-      const allNames = await getAllNames();
-      //   setNames(allNames);
+    const fetchData = async () => {
+      const allNames = await getNames();
+      if (allNames) setNames(allNames);
     };
-  });
+    fetchData();
+  }, []);
 
-  return (
-    <div>
-      <h2>NamesList</h2>
-      <NamesItem />
-      <CreateForm />
-    </div>
-  );
+  if (!names) return <Loader />;
+  else
+    return (
+      <div>
+        <h2 className="text-center text-3xl">Rank List</h2>
+
+        {Array.isArray(names) &&
+          names.map((item: NameDto) => (
+            <NamesItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              rank={item.rank}
+            />
+          ))}
+
+        <CreateForm />
+      </div>
+    );
 };
 
 export default NamesList;
