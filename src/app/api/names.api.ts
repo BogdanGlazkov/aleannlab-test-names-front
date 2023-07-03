@@ -35,6 +35,18 @@ export const editName = async (
   }
 };
 
+export const editRank = async (
+  id: number,
+  rank: number
+): Promise<NameDto | undefined> => {
+  try {
+    const { data } = await axios.put(`/${id}`, { rank });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteName = async (id: number): Promise<void> => {
   try {
     await axios.delete(`/${id}`);
