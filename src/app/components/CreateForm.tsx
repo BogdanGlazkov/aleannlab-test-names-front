@@ -1,13 +1,18 @@
 import { FC, useState } from "react";
-import { createName, getNames } from "../api/names.api";
+import { createName } from "../api/names.api";
 
 const CreateForm: FC = () => {
   const [newName, setNewName] = useState("");
 
   const onSubmit = async () => {
     if (!newName.trim()) return;
-    const newname = await createName(newName);
-    setNewName("");
+    const response = await createName(newName);
+
+    if (!response) {
+      alert("Oops! Looks like this name already exists. Try another please");
+    } else {
+      setNewName("");
+    }
   };
 
   return (
