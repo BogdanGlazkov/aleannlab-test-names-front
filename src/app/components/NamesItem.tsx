@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useState } from "react";
-import Router from "next/router";
 import {
   AiOutlineEdit,
   AiOutlineDelete,
@@ -26,7 +25,6 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
 
   const onDelete = async (id: number) => {
     confirm(`Delete item ${name}?`) && (await deleteName(id));
-    Router.reload();
   };
 
   return (
@@ -67,7 +65,7 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
       </div>
 
       {isEditing ? null : (
-        <div className="flex">
+        <form className="flex">
           <button
             className="inline-flex justify-center items-center px-2 rounded-sm hover:border"
             type="button"
@@ -78,13 +76,13 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
           </button>
           <button
             className="ml-2 inline-flex justify-center items-center px-2 rounded-sm hover:border"
-            type="button"
+            type="submit"
             title="Delete"
             onClick={() => onDelete(id)}
           >
             <AiOutlineDelete />
           </button>
-        </div>
+        </form>
       )}
     </section>
   );
