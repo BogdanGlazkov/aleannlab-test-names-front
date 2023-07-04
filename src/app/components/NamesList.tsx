@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
-import { getNames, editName, editRank } from "../api/names.api";
+import { getNames, editRank } from "../api/names.api";
 import NamesItem from "./NamesItem";
 import CreateForm from "./CreateForm";
 import Loader from "./Loader";
@@ -12,10 +12,12 @@ const NamesList = () => {
   const [fetchedNames, setFetchedNames] = useState<NameDto[] | null>(null);
   const [editedNames, setEditedNames] = useState<NameDto[] | null>(null);
   const [isRankChanged, setIsRankChanged] = useState(false);
+  const listToCompare = useRef<NameDto[] | null>(null);
 
   const onRankUp = (rank: number) => {
     if (!editedNames) return;
     if (rank <= 1) return;
+    setIsRankChanged(true);
     const idx = editedNames.findIndex((item: NameDto) => item.rank === rank);
     const editedArr = [...editedNames];
     editedArr[idx].rank--;
@@ -26,24 +28,26 @@ const NamesList = () => {
   const onRankDown = (rank: number) => {
     if (!editedNames) return;
     if (rank >= editedNames.length) return;
+    setIsRankChanged(true);
     const idx = editedNames.findIndex((item: NameDto) => item.rank === rank);
     const editedArr = [...editedNames];
     editedArr[idx].rank++;
     editedArr[idx + 1].rank--;
-    console.log(22, editedArr[idx].rank);
-
     setEditedNames(editedArr);
   };
 
   const onRankChangeSave = () => {
-    if (!editedNames || !fetchedNames) return;
-    fetchedNames.forEach(async (item) => {
+    if (!editedNames || !listToCompare.current) return;
+    listToCompare.current.forEach(async (item) => {
       const itemToCompare = editedNames.find((el) => el.id === item.id);
-      if (item.rank === itemToCompare?.rank) {
-        console.log(itemToCompare, item);
-        // await editRank(item.id, editedNames[idx].rank);
+      if (
+        item.rank !== itemToCompare?.rank &&
+        Number(itemToCompare?.rank) > 0
+      ) {
+        await editRank(item.id, Number(itemToCompare?.rank));
       }
     });
+    setIsRankChanged(false);
   };
 
   useEffect(() => {
@@ -51,6 +55,7 @@ const NamesList = () => {
       const response = await getNames();
       if (response) {
         setFetchedNames(response);
+        listToCompare.current = response.map((el: NameDto) => ({ ...el }));
       }
     };
     fetchData();
@@ -96,10 +101,10 @@ const NamesList = () => {
             ))}
         </ul>
 
-        {isRankChanged ? null : (
+        {!isRankChanged ? null : (
           <form className="mt-4" onSubmit={onRankChangeSave}>
             <button
-              className="ml-2 rounded px-2 hover:border"
+              className="ml-2 rounded px-2 hover:outline hover:outline-1"
               type="button"
               title="Save"
               onClick={onRankChangeSave}

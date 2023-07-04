@@ -43,14 +43,14 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
             />
             <div className="flex">
               <button
-                className="ml-2 rounded-sm px-2 hover:border"
+                className="ml-2 rounded-sm px-2 hover:outline hover:outline-1"
                 type="submit"
                 title="Save"
               >
                 <AiOutlineSave />
               </button>
               <button
-                className="ml-2 rounded-sm px-2 hover:border"
+                className="ml-2 rounded-sm px-2 hover:outline hover:outline-1"
                 type="button"
                 title="Close"
                 onClick={onEditToggle}
@@ -67,7 +67,7 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
       {isEditing ? null : (
         <form className="flex">
           <button
-            className="inline-flex justify-center items-center px-2 rounded-sm hover:border"
+            className="inline-flex justify-center items-center px-2 rounded-sm hover:outline hover:outline-1"
             type="button"
             title="Edit"
             onClick={onEditToggle}
@@ -75,7 +75,7 @@ const NamesItem: FC<NameDto> = ({ id, name, rank }: NameDto) => {
             <AiOutlineEdit />
           </button>
           <button
-            className="ml-2 inline-flex justify-center items-center px-2 rounded-sm hover:border"
+            className="ml-2 inline-flex justify-center items-center px-2 rounded-sm hover:outline hover:outline-1"
             type="submit"
             title="Delete"
             onClick={() => onDelete(id)}

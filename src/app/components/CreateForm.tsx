@@ -27,7 +27,7 @@ const CreateForm: FC = () => {
           onChange={(e) => setNewName(e.target.value)}
         />
         <button
-          className="ml-2 rounded px-2 hover:border"
+          className="ml-2 rounded px-2 hover:outline hover:outline-1"
           type="submit"
           title="Save"
         >
