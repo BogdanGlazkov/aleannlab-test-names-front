@@ -8,10 +8,10 @@ const CreateForm: FC = () => {
     if (!newName.trim()) return;
     const response = await createName(newName);
 
-    if (!response) {
-      alert("Oops! Looks like this name already exists. Try another please");
-    } else {
+    if (response) {
       setNewName("");
+    } else {
+      alert("Oops! Looks like this name already exists. Try another please");
     }
   };
 
